@@ -1,0 +1,10 @@
+        if(i===0 && !(startY>100 && startY<200)){
+         dx = startX;
+        }
+        else if(startY>100 && startY<200){
+          console.log(">>>>>>>>>>>mid loop<<<<<<<<<<<")
+          dx = (startX);
+        }
+        else{
+          dx = startX+(50*i)+Math.floor(Math.random()*20);
+        }
