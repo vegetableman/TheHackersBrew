@@ -61,7 +61,8 @@ function booze(domid,width,height,ingredients){
         console.log("y :"+attrObj.y)
         bottomLabel = self.paper.text()
         bottomLabel.attr(attrObj);
-        bottomLabel.translate(600,600);
+       //translate relative to heigth passed
+        bottomLabel.translate(height-200,height-200);
      //empty the queue for the new rows to show up
         $(this).dequeue();
       });
@@ -71,12 +72,27 @@ function booze(domid,width,height,ingredients){
 //fill text contents in the middle portion
 //Need to simplify this function
   self.fillMid = function(){
-    var startY=580,startX,endX,midLabel,bottomColors=["#2C3033","#000000"];
+    var startY=height-220,startX,endX,midLabel,bottomColors=["#2C3033","#000000"];
     var dx=0;
     var isEven = 0;
     var indent = 0;
     while(startY > 20){
-      indent = (startY > 400)?indent -= 2:(startY > 450 )?indent -= 1 :(startY < 100)?indent -= 1:indent += 1;
+
+     //for creating the curves based on predefined portions of the mug
+      if(startY > 400){
+        indent -= 2;
+      }
+      else if(startY > 450){
+        indent -= 1;
+      }
+      else if(startY < 100){
+        indent -= 1;
+      }
+      else{
+        indent += 1;
+      }
+
+    //for traversing from left to right and right to left based on even/odd row number   
      if(isEven % 2 == 0){
       startX = 360;
       endX = 830;
@@ -87,9 +103,12 @@ function booze(domid,width,height,ingredients){
         if(index === 9 && startY < 580){
           endX += (10 + indent);
         }
+
         dx = (index===0)?startX:(index===9)?endX:startX +(50*index)+Math.floor(Math.random()*20);
+
         console.log("startY: "+startY);
         console.log("dx: "+dx) 
+
         var attrObj = {
           'text':ingredients[index].ingredient,
           'x':dx,
@@ -111,9 +130,12 @@ function booze(domid,width,height,ingredients){
         if(index === 0 && startY < 580){
           endX -= (5 + indent);
         }
+
         dx = (index===9)?startX:(index===0)?endX:startX-(50*index)+Math.floor(Math.random()*20);
+
         console.log("startY: "+startY);
         console.log("dx: "+dx) 
+
         var attrObj = {
           'text':ingredients[index].ingredient,
           'x':dx,
@@ -121,6 +143,7 @@ function booze(domid,width,height,ingredients){
           'fill':bottomColors[Math.floor(Math.random()*$(bottomColors).length)],
           'font-family':self.boozeFonts[Math.floor(Math.random()*$(self.boozeFonts).length)]
         };
+
         midLabel = self.paper.text();
         midLabel.attr(attrObj);
      }
@@ -200,8 +223,11 @@ jQuery(function(){
     {ingredient:'ASP',x:100,y:100,size:15},
     {ingredient:'PHP',x:100,y:100,size:15},
     {ingredient:'JSP',x:100,y:100,size:15}
-  ])
- })
+  ]);
+
+  console.log("height : "+window.innerHeight);
+  console.log("width : "+window.innerWidth);
+ });
 
 
 //Path transformation from Raphael library
